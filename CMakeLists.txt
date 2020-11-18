@@ -49,16 +49,13 @@ get_filename_component(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/" ABSOLUTE)
 
 include("${CINDER_PATH}/proj/cmake/modules/cinderMakeApp.cmake")
 
-list(APPEND CORE_SOURCE_FILES src/core/parser.cc src/core/image.cpp src/core/model.cpp)
+list(APPEND CORE_SOURCE_FILES src/core/image.cc)
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
-                            src/visualizer/naive_bayes_app.cc
-                            src/visualizer/sketchpad.cc)
+        src/visualizer/image_editor_app.cc
+        src/visualizer/image_window.cc)
 
-list(APPEND TEST_FILES tests/model_test.cc tests/image_test.cpp)
-
-add_executable(train-model apps/train_model_main.cc ${CORE_SOURCE_FILES})
-target_include_directories(train-model PRIVATE include)
+list(APPEND TEST_FILES tests/image_test.cc)
 
 ci_make_app(
         APP_NAME        image-editor

@@ -3,19 +3,15 @@
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
-#include "sketchpad.h"
+#include "image_window.h"
 
-namespace naivebayes {
+namespace image_editor {
 
 namespace visualizer {
 
-/**
- * Allows a user to draw a digit on a sketchpad and uses Naive Bayes to
- * classify it.
- */
-class NaiveBayesApp : public ci::app::App {
+class ImageEditorApp : public ci::app::App {
  public:
-  NaiveBayesApp();
+  ImageEditorApp();
 
   void draw() override;
   void mouseDown(ci::app::MouseEvent event) override;
@@ -28,10 +24,9 @@ class NaiveBayesApp : public ci::app::App {
   const size_t kImageDimension = 28;
 
  private:
-  Sketchpad sketchpad_;
-  int current_prediction_ = -1;
+  ImageWindow image_window_;
 };
 
 }  // namespace visualizer
 
-}  // namespace naivebayes
+}  // namespace image_editor
