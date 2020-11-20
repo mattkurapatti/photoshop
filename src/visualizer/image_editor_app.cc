@@ -6,13 +6,18 @@ namespace image_editor {
 namespace visualizer {
 
 ImageEditorApp::ImageEditorApp()
-    : image_window_(glm::vec2(kMargin, kMargin), kImageDimension,
-                 kWindowSize - 2 * kMargin) {
-  ci::app::setWindowSize((int)kWindowSize, (int)kWindowSize);
+    : image_window_(
+          glm::vec2(kMargin, kMargin),
+          glm::vec2(kWindowSize * kImageSizeFactor, kWindowSize - kMargin)) {
+  ci::app::setWindowSize(static_cast<int>(kWindowSize),
+                         static_cast<int>(kWindowSize));
 }
 
 void ImageEditorApp::draw() {
+  ci::Color8u background_color(255, 255, 255);  // white
+  ci::gl::clear(background_color);
 
+  image_window_.Draw();
 }
 
 void ImageEditorApp::mouseDown(ci::app::MouseEvent event) {

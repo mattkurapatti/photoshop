@@ -1,24 +1,25 @@
 #include <visualizer/image_window.h>
+#include <visualizer/image_sidebar.h>
+
 
 namespace image_editor {
 
 namespace visualizer {
 
-using glm::vec2;
-
-ImageWindow::ImageWindow(const vec2& top_left_corner, size_t num_pixels_per_side,
-                     double sketchpad_size, double brush_radius)
+ImageWindow::ImageWindow(const glm::vec2& top_left_corner,
+                         const glm::vec2& bottom_right_corner)
     : top_left_corner_(top_left_corner),
-      num_pixels_per_side_(num_pixels_per_side),
-      pixel_side_length_(sketchpad_size / num_pixels_per_side),
-      brush_radius_(brush_radius) {
-  Clear();
+      bottom_right_corner_(bottom_right_corner) {
 }
 
 void ImageWindow::Draw() const {
+  // draw box around image
+  ci::Rectf pixel_bounding_box(top_left_corner_, bottom_right_corner_);
+  ci::gl::color(ci::Color("black"));
+  ci::gl::drawStrokedRect(pixel_bounding_box);
 }
 
-void ImageWindow::HandleBrush(const vec2& brush_screen_coords) {
+void ImageWindow::HandleBrush(const glm::vec2& brush_screen_coords) {
 }
 
 void ImageWindow::Clear() {

@@ -53,7 +53,8 @@ list(APPEND CORE_SOURCE_FILES src/core/image.cc)
 
 list(APPEND SOURCE_FILES    ${CORE_SOURCE_FILES}
         src/visualizer/image_editor_app.cc
-        src/visualizer/image_window.cc)
+        src/visualizer/image_window.cc
+        src/visualizer/image_sidebar.cc)
 
 list(APPEND TEST_FILES tests/image_test.cc)
 
@@ -65,7 +66,7 @@ ci_make_app(
 )
 
 ci_make_app(
-        APP_NAME        naive-bayes-test
+        APP_NAME        image-editor-test
         CINDER_PATH     ${CINDER_PATH}
         SOURCES         tests/test_main.cc ${SOURCE_FILES} ${TEST_FILES}
         INCLUDES        include
@@ -73,5 +74,5 @@ ci_make_app(
 )
 
 if(MSVC)
-    set_property(TARGET naive-bayes-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
+    set_property(TARGET image-editor-test APPEND_STRING PROPERTY LINK_FLAGS " /SUBSYSTEM:CONSOLE")
 endif()

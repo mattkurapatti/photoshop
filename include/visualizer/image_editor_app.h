@@ -21,7 +21,7 @@ class ImageEditorApp : public ci::app::App {
   // provided that you can see the entire UI on your screen.
   const double kWindowSize = 875;
   const double kMargin = 100;
-  const size_t kImageDimension = 28;
+  const double kImageSizeFactor = 2.0 / 3;
 
  private:
   ImageWindow image_window_;
