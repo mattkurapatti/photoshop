@@ -20,5 +20,8 @@ Image::Image(size_t num_rows, size_t num_cols) {
 Image::Image(std::vector<std::vector<pixel>> pixels) {
   pixels_ = std::move(pixels);
 }
+const std::vector<std::vector<pixel>> &Image::GetPixels() const {
+  return pixels_;
+}
 
 }  // namespace image_editor

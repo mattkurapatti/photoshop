@@ -1,5 +1,7 @@
 #pragma once
 
+#include <core/image.h>
+
 #include <glm/fwd.hpp>
 #include <glm/vec2.hpp>
 
@@ -15,14 +17,18 @@ class ImageWindow {
 
   void Draw() const;
 
-  void HandleBrush(const glm::vec2& brush_screen_coords);
+  void HandleBrush(const glm::vec2& brush_screen_coords, pixel pix,
+                   float brush_radius);
 
   void Clear();
 
  private:
   glm::vec2 top_left_corner_;
 
-  glm::vec2 bottom_right_corner_;
+  glm::vec2 dimensions_;
+
+  ci::Surface surface_;
+
 };
 
 }  // namespace visualizer

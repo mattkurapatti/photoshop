@@ -6,9 +6,9 @@ namespace image_editor {
 namespace visualizer {
 
 ImageEditorApp::ImageEditorApp()
-    : image_window_(
-          glm::vec2(kMargin, kMargin),
-          glm::vec2(kWindowSize * kImageSizeFactor, kWindowSize - kMargin)) {
+    : image_window_(glm::vec2(kMargin, kMargin),
+                    glm::vec2(kWindowSize * kImageSizeFactor - kMargin,
+                              kWindowSize - 2 * kMargin)) {
   ci::app::setWindowSize(static_cast<int>(kWindowSize),
                          static_cast<int>(kWindowSize));
 }
@@ -18,14 +18,16 @@ void ImageEditorApp::draw() {
   ci::gl::clear(background_color);
 
   image_window_.Draw();
+
+
 }
 
 void ImageEditorApp::mouseDown(ci::app::MouseEvent event) {
-  image_window_.HandleBrush(event.getPos());
+  image_window_.HandleBrush(event.getPos(), {255, 0, 0}, 20);
 }
 
 void ImageEditorApp::mouseDrag(ci::app::MouseEvent event) {
-  image_window_.HandleBrush(event.getPos());
+  image_window_.HandleBrush(event.getPos(), {255, 0, 0}, 20);
 }
 
 void ImageEditorApp::keyDown(ci::app::KeyEvent event) {

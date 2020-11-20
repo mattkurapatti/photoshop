@@ -9,16 +9,17 @@
 namespace image_editor {
 
 struct pixel {
-  int r;
-  int g;
-  int b;
+  float r;
+  float g;
+  float b;
 };
 
 class Image {
  public:
   Image(size_t num_rows, size_t num_cols);
   Image(std::vector<std::vector<pixel>> pixels);
- private:
+  const std::vector<std::vector<pixel>>& GetPixels() const;
+private:
   std::vector<std::vector<pixel>> pixels_;
 };
 
