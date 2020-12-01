@@ -16,6 +16,7 @@ class ImageEditorApp : public ci::app::App {
   void draw() override;
   void mouseDown(ci::app::MouseEvent event) override;
   void mouseDrag(ci::app::MouseEvent event) override;
+  void ImageEditorApp::fileDrop(ci::app::FileDropEvent event) override;
   void keyDown(ci::app::KeyEvent event) override;
 
   // provided that you can see the entire UI on your screen.

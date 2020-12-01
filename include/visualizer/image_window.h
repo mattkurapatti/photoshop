@@ -22,6 +22,10 @@ class ImageWindow {
 
   void Clear();
 
+  void LoadSurface(const ci::fs::path& path);
+
+  void SaveSurface(const ci::fs::path& path);
+
  private:
   glm::vec2 top_left_corner_;
 
