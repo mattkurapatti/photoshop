@@ -2,25 +2,27 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "cinder/gl/gl.h"
 
-#include "image.h"
+#include "cinder/gl/gl.h"
 
 namespace image_editor {
 
-struct pixel {
-  float r;
-  float g;
-  float b;
-};
-
 class Image {
  public:
-  Image(size_t num_rows, size_t num_cols);
-  Image(std::vector<std::vector<pixel>> pixels);
-  const std::vector<std::vector<pixel>>& GetPixels() const;
-private:
-  std::vector<std::vector<pixel>> pixels_;
+  Image(ci::Surface surface, const glm::vec2& top_left_corner,
+        const glm::vec2& bottom_right_corner);
+  void LoadSurface(const ci::fs::path& path);
+  void SaveSurface(const ci::fs::path& path);
+
+  ci::Surface GetSurface() const;
+
+  void ZeroBlue();
+  void Negate();
+
+ private:
+  ci::Surface surface_;
+  glm::vec2 top_left_corner_;
+  glm::vec2 bottom_right_corner_;
 };
 
 }  // namespace image_editor

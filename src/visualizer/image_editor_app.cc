@@ -8,7 +8,7 @@ namespace visualizer {
 ImageEditorApp::ImageEditorApp()
     : image_window_(glm::vec2(kMargin, kMargin),
                     glm::vec2(kWindowSize * kImageSizeFactor - kMargin,
-                              kWindowSize - 2 * kMargin)) {
+                              kWindowSize - 2 * kMargin), ci::loadImage("images/default.jpg")) {
   ci::app::setWindowSize(static_cast<int>(kWindowSize),
                          static_cast<int>(kWindowSize));
 }
@@ -22,11 +22,11 @@ void ImageEditorApp::draw() {
 }
 
 void ImageEditorApp::mouseDown(ci::app::MouseEvent event) {
-  image_window_.HandleBrush(event.getPos(), {255, 0, 0}, 20);
+  image_window_.HandleBrush(event.getPos(), 20);
 }
 
 void ImageEditorApp::mouseDrag(ci::app::MouseEvent event) {
-  image_window_.HandleBrush(event.getPos(), {255, 0, 0}, 20);
+  image_window_.HandleBrush(event.getPos(), 20);
 }
 
 void ImageEditorApp::fileDrop(ci::app::FileDropEvent event) {
@@ -44,6 +44,14 @@ void ImageEditorApp::keyDown(ci::app::KeyEvent event) {
     case ci::app::KeyEvent::KEY_s: {
       ci::fs::path path = getSaveFilePath();
       image_window_.SaveSurface(path);
+      break;
+    }
+    case ci::app::KeyEvent::KEY_z: {
+      image_window_.ZeroBlue();
+      break;
+    }
+    case ci::app::KeyEvent::KEY_n: {
+      image_window_.Negate();
       break;
     }
     case ci::app::KeyEvent::KEY_DELETE:
