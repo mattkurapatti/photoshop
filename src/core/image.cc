@@ -5,11 +5,7 @@
 
 namespace image_editor {
 
-Image::Image(cinder::Surface surface, const glm::vec2& top_left_corner,
-             const glm::vec2& bottom_right_corner)
-    : surface_(std::move(surface)),
-      top_left_corner_(top_left_corner),
-      bottom_right_corner_(bottom_right_corner) {
+Image::Image(ci::Surface surface) : surface_(std::move(surface)) {
 }
 
 void Image::LoadSurface(const ci::fs::path& path) {
@@ -28,8 +24,7 @@ ci::Surface Image::GetSurface() const {
 }
 
 void Image::ZeroBlue() {
-  ci::Area area(top_left_corner_, bottom_right_corner_);
-  ci::Surface::Iter iter = surface_.getIter(area);
+  ci::Surface::Iter iter = surface_.getIter();
   while (iter.line()) {
     while (iter.pixel()) {
       iter.b() = 0;
@@ -38,13 +33,31 @@ void Image::ZeroBlue() {
 }
 
 void Image::Negate() {
-  ci::Area area(top_left_corner_, bottom_right_corner_);
-  ci::Surface::Iter iter = surface_.getIter(area);
+  ci::Surface::Iter iter = surface_.getIter();
   while (iter.line()) {
     while (iter.pixel()) {
       iter.r() = 255 - iter.r();
       iter.g() = 255 - iter.g();
       iter.b() = 255 - iter.b();
+    }
+  }
+}
+
+void Image::FilterSepia() {
+  ci::Surface::Iter iter = surface_.getIter();
+
+  // based on Microsoft's algorithm for the Sepia Filter:
+  // sets r to .393 * r + .769 * g + .189 * b
+  // sets g to .349 * r + .686 * g + .168 * b
+  // sets b to .272 * r + .534 * g + .131 * b
+  while (iter.line()) {
+    while (iter.pixel()) {
+      iter.r() = static_cast<uint8_t>(0.393 * iter.r() + 0.769 * iter.g() +
+                                      0.189 * iter.b());
+      iter.g() = static_cast<uint8_t>(0.349 * iter.r() + 0.686 * iter.g() +
+                                      0.168 * iter.b());
+      iter.b() = static_cast<uint8_t>(0.272 * iter.r() + 0.534 * iter.g() +
+                                      0.131 * iter.b());
     }
   }
 }

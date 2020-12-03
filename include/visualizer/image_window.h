@@ -13,8 +13,7 @@ namespace visualizer {
 
 class ImageWindow {
  public:
-  ImageWindow(const glm::vec2& top_left_corner,
-              const glm::vec2& bottom_right_corner, ci::Surface surface);
+  ImageWindow(const glm::vec2& top_left_corner, const glm::vec2& dimensions);
 
   void Draw() const;
 
@@ -29,6 +28,8 @@ class ImageWindow {
   void ZeroBlue();
 
   void Negate();
+
+  void FilterSepia();
 
  private:
   glm::vec2 top_left_corner_;

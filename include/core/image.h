@@ -9,8 +9,7 @@ namespace image_editor {
 
 class Image {
  public:
-  Image(ci::Surface surface, const glm::vec2& top_left_corner,
-        const glm::vec2& bottom_right_corner);
+  explicit Image(ci::Surface surface);
   void LoadSurface(const ci::fs::path& path);
   void SaveSurface(const ci::fs::path& path);
 
@@ -18,11 +17,10 @@ class Image {
 
   void ZeroBlue();
   void Negate();
+  void FilterSepia();
 
  private:
   ci::Surface surface_;
-  glm::vec2 top_left_corner_;
-  glm::vec2 bottom_right_corner_;
 };
 
 }  // namespace image_editor

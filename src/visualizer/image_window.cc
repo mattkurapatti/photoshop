@@ -16,10 +16,10 @@ namespace image_editor {
 namespace visualizer {
 
 ImageWindow::ImageWindow(const glm::vec2& top_left_corner,
-                         const glm::vec2& dimensions, ci::Surface surface)
+                         const glm::vec2& dimensions)
     : top_left_corner_(top_left_corner),
       dimensions_(dimensions),
-      image_(std::move(surface), top_left_corner, top_left_corner + dimensions) {
+      image_(ci::loadImage("images/default.jpg")) {
 }
 
 void ImageWindow::Draw() const {
@@ -56,6 +56,10 @@ void ImageWindow::ZeroBlue() {
 
 void ImageWindow::Negate() {
   image_.Negate();
+}
+
+void ImageWindow::FilterSepia() {
+  image_.FilterSepia();
 }
 
 }  // namespace visualizer

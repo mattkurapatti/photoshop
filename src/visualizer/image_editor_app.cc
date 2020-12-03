@@ -8,11 +8,10 @@ namespace visualizer {
 ImageEditorApp::ImageEditorApp()
     : image_window_(glm::vec2(kMargin, kMargin),
                     glm::vec2(kWindowSize * kImageSizeFactor - kMargin,
-                              kWindowSize - 2 * kMargin), ci::loadImage("images/default.jpg")) {
+                              kWindowSize - 2 * kMargin)) {
   ci::app::setWindowSize(static_cast<int>(kWindowSize),
                          static_cast<int>(kWindowSize));
 }
-
 
 void ImageEditorApp::draw() {
   ci::Color8u background_color(255, 255, 255);  // white
@@ -52,6 +51,10 @@ void ImageEditorApp::keyDown(ci::app::KeyEvent event) {
     }
     case ci::app::KeyEvent::KEY_n: {
       image_window_.Negate();
+      break;
+    }
+    case ci::app::KeyEvent::KEY_1: {
+      image_window_.FilterSepia();
       break;
     }
     case ci::app::KeyEvent::KEY_DELETE:
