@@ -52,12 +52,26 @@ void Image::FilterSepia() {
   // sets b to .272 * r + .534 * g + .131 * b
   while (iter.line()) {
     while (iter.pixel()) {
-      iter.r() = static_cast<uint8_t>(0.393 * iter.r() + 0.769 * iter.g() +
+      int r = static_cast<int>(0.393 * iter.r() + 0.769 * iter.g() +
                                       0.189 * iter.b());
-      iter.g() = static_cast<uint8_t>(0.349 * iter.r() + 0.686 * iter.g() +
+      int g = static_cast<int>(0.349 * iter.r() + 0.686 * iter.g() +
                                       0.168 * iter.b());
-      iter.b() = static_cast<uint8_t>(0.272 * iter.r() + 0.534 * iter.g() +
+      int b = static_cast<uint8_t>(0.272 * iter.r() + 0.534 * iter.g() +
                                       0.131 * iter.b());
+
+      iter.r() = 255;
+      iter.g() = 255;
+      iter.b() = 255;
+
+      if(r < 255) {
+        iter.r() = r;
+      }
+      if(g < 255) {
+        iter.g() = g;
+      }
+      if(b < 255) {
+        iter.b() = b;
+      }
     }
   }
 }
