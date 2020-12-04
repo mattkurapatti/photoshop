@@ -57,6 +57,10 @@ void ImageEditorApp::keyDown(ci::app::KeyEvent event) {
       image_window_.FilterSepia();
       break;
     }
+    case ci::app::KeyEvent::KEY_m: {
+      image_window_.Mirror();
+      break;
+    }
     case ci::app::KeyEvent::KEY_DELETE:
       break;
   }

@@ -31,6 +31,8 @@ class ImageWindow {
 
   void FilterSepia();
 
+  void Mirror();
+
  private:
   glm::vec2 top_left_corner_;
 

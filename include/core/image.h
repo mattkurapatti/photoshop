@@ -18,6 +18,7 @@ class Image {
   void ZeroBlue();
   void Negate();
   void FilterSepia();
+  void Mirror();
 
  private:
   ci::Surface surface_;

@@ -62,6 +62,10 @@ void ImageWindow::FilterSepia() {
   image_.FilterSepia();
 }
 
+void ImageWindow::Mirror() {
+  image_.Mirror();
+}
+
 }  // namespace visualizer
 
 }  // namespace image_editor

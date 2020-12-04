@@ -53,24 +53,45 @@ void Image::FilterSepia() {
   while (iter.line()) {
     while (iter.pixel()) {
       int r = static_cast<int>(0.393 * iter.r() + 0.769 * iter.g() +
-                                      0.189 * iter.b());
+                               0.189 * iter.b());
       int g = static_cast<int>(0.349 * iter.r() + 0.686 * iter.g() +
-                                      0.168 * iter.b());
+                               0.168 * iter.b());
       int b = static_cast<uint8_t>(0.272 * iter.r() + 0.534 * iter.g() +
-                                      0.131 * iter.b());
+                                   0.131 * iter.b());
 
       iter.r() = 255;
       iter.g() = 255;
       iter.b() = 255;
 
-      if(r < 255) {
+      if (r < 255) {
         iter.r() = r;
       }
-      if(g < 255) {
+      if (g < 255) {
         iter.g() = g;
       }
-      if(b < 255) {
+      if (b < 255) {
         iter.b() = b;
+      }
+    }
+  }
+}
+
+void Image::Mirror() {
+  ci::Surface::Iter iter = surface_.getIter();
+
+  while (iter.line()) {
+    while (iter.pixel()) {
+      if (iter.getPos().y <= std::floor(iter.getHeight() / 2.0)) {
+        ci::ColorA color1 = surface_.getPixel(iter.getPos());
+        int x1 = iter.getPos().x;
+        int y1 = iter.getPos().y;
+
+        int x2 = x1;
+        int y2 = surface_.getHeight() - y1 - 1;
+
+        surface_.setPixel(glm::vec2(x1, y1),
+                          surface_.getPixel(glm::vec2(x2, y2)));
+        surface_.setPixel(glm::vec2(x2, y2), color1);
       }
     }
   }
