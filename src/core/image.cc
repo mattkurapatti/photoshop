@@ -97,4 +97,22 @@ void Image::Mirror() {
   }
 }
 
+void Image::Posterize() {
+}
+
+void Image::ColorSplash() {
+}
+
+void Image::Pixelate() {
+}
+
+void Image::FilterSunset() {
+}
+
+void Image::CorrectRedEye() {
+}
+
+void Image::FillEdges() {
+}
+
 }  // namespace image_editor

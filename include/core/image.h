@@ -19,6 +19,14 @@ class Image {
   void Negate();
   void FilterSepia();
   void Mirror();
+  void Posterize();
+  void ColorSplash();
+  void Pixelate();
+  void FilterSunset();
+  void CorrectRedEye();
+  void FillEdges();
+
+  const int kPosterize = 75;
 
  private:
   ci::Surface surface_;
