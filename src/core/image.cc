@@ -13,6 +13,7 @@ void Image::LoadSurface(const ci::fs::path& path) {
     surface_ = ci::loadImage(path);
   }
 }
+
 void Image::SaveSurface(const ci::fs::path& path) {
   if (!path.empty()) {
     writeImage(ci::writeFile(path), surface_);
@@ -21,6 +22,24 @@ void Image::SaveSurface(const ci::fs::path& path) {
 
 ci::Surface Image::GetSurface() const {
   return surface_;
+}
+
+void Image::Draw(const glm::vec2& pos, const ci::Color& color,
+                 double brush_radius) {
+  ci::Surface::Iter iter = surface_.getIter();
+  while (iter.line()) {
+    while (iter.pixel()) {
+      if (Distance(iter.getPos(), pos) < brush_radius) {
+        iter.r() = color.r;
+        iter.g() = color.g;
+        iter.b() = color.b;
+      }
+    }
+  }
+}
+
+double Image::Distance(const glm::vec2& vec1, const glm::vec2& vec2) const {
+  return std::sqrt(std::pow(vec1.x - vec2.x, 2) + std::pow(vec1.y - vec2.y, 2));
 }
 
 void Image::ZeroBlue() {
