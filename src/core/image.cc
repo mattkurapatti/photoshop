@@ -30,9 +30,9 @@ void Image::Draw(const glm::vec2& pos, const ci::Color& color,
   while (iter.line()) {
     while (iter.pixel()) {
       if (Distance(iter.getPos(), pos) < brush_radius) {
-        iter.r() = color.r;
-        iter.g() = color.g;
-        iter.b() = color.b;
+        iter.r() = static_cast<uint8_t>(color.r);
+        iter.g() = static_cast<uint8_t>(color.g);
+        iter.b() = static_cast<uint8_t>(color.b);
       }
     }
   }

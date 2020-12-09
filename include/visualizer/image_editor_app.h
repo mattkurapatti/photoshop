@@ -4,6 +4,7 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 #include "image_window.h"
+#include "image_sidebar.h"
 
 namespace image_editor {
 
@@ -26,6 +27,7 @@ class ImageEditorApp : public ci::app::App {
 
  private:
   ImageWindow image_window_;
+  ImageSidebar image_sidebar_;
 };
 
 }  // namespace visualizer
