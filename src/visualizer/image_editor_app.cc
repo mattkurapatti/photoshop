@@ -25,12 +25,12 @@ void ImageEditorApp::draw() {
 }
 
 void ImageEditorApp::mouseDown(ci::app::MouseEvent event) {
-  image_window_.HandleBrush(event.getPos(), 20);
+  image_window_.HandleBrush(event.getPos(), image_sidebar_.GetSelectedColor());
   image_sidebar_.HandleBrush(event.getPos());
 }
 
 void ImageEditorApp::mouseDrag(ci::app::MouseEvent event) {
-  image_window_.HandleBrush(event.getPos(), 20);
+  image_window_.HandleBrush(event.getPos(), image_sidebar_.GetSelectedColor());
 }
 
 void ImageEditorApp::fileDrop(ci::app::FileDropEvent event) {

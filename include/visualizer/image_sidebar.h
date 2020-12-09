@@ -17,6 +17,8 @@ class ImageSidebar {
   const float kPaintButtonWidth = 25.0;
   const float kInnerButtonMargin = 2.0;
 
+  cinder::Color GetSelectedColor();
+
  private:
   glm::vec2 top_left_corner_;
 

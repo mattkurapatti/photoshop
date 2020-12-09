@@ -15,7 +15,7 @@ namespace image_editor {
 
         ci::Surface GetSurface() const;
 
-        void Draw(const glm::vec2& pos, const ci::Color& color, double brush_radius);
+        void Draw(const glm::vec2& relative_pos, const ci::Color& color, double brush_radius);
         double Distance(const glm::vec2& vec1, const glm::vec2& vec2) const;
 
         void ZeroBlue();

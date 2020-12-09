@@ -36,7 +36,11 @@ void ImageWindow::Draw() const {
 }
 
 void ImageWindow::HandleBrush(const glm::vec2& brush_screen_coords,
-                              float brush_radius) {
+                              const cinder::Color& color) {
+  glm::vec2 image_pos = brush_screen_coords - top_left_corner_;
+  image_.Draw(
+      glm::vec2(image_pos.x / dimensions_.x, image_pos.y / dimensions_.y),
+      color, 5);
 }
 
 void ImageWindow::Clear() {

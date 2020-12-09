@@ -57,6 +57,10 @@ bool ImageSidebar::ButtonClicked(ci::Rectf rect, const glm::vec2& pos) {
           pos.y <= rect.y2);
 }
 
+ci::Color ImageSidebar::GetSelectedColor() {
+  return selected_;
+}
+
 }  // namespace visualizer
 
 }  // namespace image_editor

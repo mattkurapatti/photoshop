@@ -24,8 +24,9 @@ ci::Surface Image::GetSurface() const {
   return surface_;
 }
 
-void Image::Draw(const glm::vec2& pos, const ci::Color& color,
+void Image::Draw(const glm::vec2& relative_pos, const ci::Color& color,
                  double brush_radius) {
+  glm::vec2 pos(relative_pos.x * surface_.getWidth(), relative_pos.y * surface_.getHeight());
   ci::Surface::Iter iter = surface_.getIter();
   while (iter.line()) {
     while (iter.pixel()) {
