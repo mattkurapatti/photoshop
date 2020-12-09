@@ -33,6 +33,10 @@ class ImageWindow {
 
   void Mirror();
 
+  Image& GetImage();
+
+  void ResetImage();
+
  private:
   glm::vec2 top_left_corner_;
 

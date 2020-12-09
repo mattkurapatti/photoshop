@@ -5,12 +5,16 @@
 
 namespace image_editor {
 
-Image::Image(ci::Surface surface) : surface_(std::move(surface)) {
+Image::Image(ci::Surface surface)
+    : original_surface_(surface.clone()),
+      surface_(std::move(surface)),
+      modifier_("Draw") {
 }
 
 void Image::LoadSurface(const ci::fs::path& path) {
   if (!path.empty()) {
     surface_ = ci::loadImage(path);
+    original_surface_ = surface_.clone();
   }
 }
 
@@ -24,9 +28,22 @@ ci::Surface Image::GetSurface() const {
   return surface_;
 }
 
-void Image::Draw(const glm::vec2& relative_pos, const ci::Color& color,
+void Image::HandleBrush(const glm::vec2& relative_pos, const ci::Color& color,
+                        double brush_radius) {
+  glm::vec2 pos(relative_pos.x * surface_.getWidth(),
+                relative_pos.y * surface_.getHeight());
+
+  if (modifier_ == "Draw") {
+    Draw(pos, color, brush_radius);
+  } else if (modifier_ == "Blur") {
+    Blur(pos);
+  } else if (modifier_ == "Red-Eye") {
+    CorrectRedEye(pos);
+  }
+}
+
+void Image::Draw(const glm::vec2& pos, const cinder::Color& color,
                  double brush_radius) {
-  glm::vec2 pos(relative_pos.x * surface_.getWidth(), relative_pos.y * surface_.getHeight());
   ci::Surface::Iter iter = surface_.getIter();
   while (iter.line()) {
     while (iter.pixel()) {
@@ -39,6 +56,12 @@ void Image::Draw(const glm::vec2& relative_pos, const ci::Color& color,
   }
 }
 
+void Image::Blur(const glm::vec2& pos) {
+}
+
+void Image::CorrectRedEye(const glm::vec2& pos) {
+}
+
 double Image::Distance(const glm::vec2& vec1, const glm::vec2& vec2) const {
   return std::sqrt(std::pow(vec1.x - vec2.x, 2) + std::pow(vec1.y - vec2.y, 2));
 }
@@ -48,6 +71,18 @@ void Image::ZeroBlue() {
   while (iter.line()) {
     while (iter.pixel()) {
       iter.b() = 0;
+    }
+  }
+}
+
+void Image::Grayscale() {
+  ci::Surface::Iter iter = surface_.getIter();
+  while (iter.line()) {
+    while (iter.pixel()) {
+      int avg = (iter.r() + iter.g() + iter.b()) / 3;
+      iter.r() = avg;
+      iter.b() = avg;
+      iter.g() = avg;
     }
   }
 }
@@ -96,7 +131,7 @@ void Image::FilterSepia() {
   }
 }
 
-void Image::Mirror() {
+void Image::MirrorUD() {
   ci::Surface::Iter iter = surface_.getIter();
 
   while (iter.line()) {
@@ -117,22 +152,94 @@ void Image::Mirror() {
   }
 }
 
+void Image::MirrorLR() {
+}
+
 void Image::Posterize() {
+  ci::Surface::Iter iter = surface_.getIter();
+  while (iter.line()) {
+    while (iter.pixel()) {
+      for (int rgb = 0; rgb <= 255; rgb += kPosterize) {
+        if (iter.r() >= rgb && iter.r() <= kPosterize) {
+          iter.r() = (rgb + kPosterize) / 2;
+        }
+        if (iter.g() >= rgb && iter.g() <= kPosterize) {
+          iter.g() = (rgb + kPosterize) / 2;
+        }
+        if (iter.b() >= rgb && iter.b() <= kPosterize) {
+          iter.b() = (rgb + kPosterize) / 2;
+        }
+      }
+    }
+  }
 }
 
 void Image::ColorSplash() {
+  ci::Surface::Iter iter = surface_.getIter();
+  while (iter.line()) {
+    while (iter.pixel()) {
+      if (iter.r() < iter.g() + iter.b()) {
+        int avg = (iter.r() + iter.g() + iter.b()) / 3;
+        iter.r() = avg;
+        iter.b() = avg;
+        iter.g() = avg;
+      }
+    }
+  }
 }
 
 void Image::Pixelate() {
 }
 
 void Image::FilterSunset() {
-}
-
-void Image::CorrectRedEye() {
+  ci::Surface::Iter iter = surface_.getIter();
+  while (iter.line()) {
+    while (iter.pixel()) {
+      iter.g() = static_cast<uint8_t>(0.80 * iter.g());
+      iter.b() = static_cast<uint8_t>(0.80 * iter.b());
+    }
+  }
 }
 
 void Image::FillEdges() {
+}
+
+void Image::HandleInputFilter(const std::string& filter) {
+  if (filter == "ZeroBlue") {
+    ZeroBlue();
+  }
+  if (filter == "Grayscale") {
+    Grayscale();
+  }
+  if (filter == "Negate") {
+    Negate();
+  }
+  if (filter == "Sepia Filter") {
+    FilterSepia();
+  }
+  if (filter == "Mirror") {
+    MirrorUD();
+  }
+  if (filter == "Posterize") {
+    Posterize();
+  }
+  if (filter == "Color Splash") {
+    ColorSplash();
+  }
+  if (filter == "Sunset Filter") {
+    FilterSunset();
+  }
+  if (filter == "Fill Edges") {
+    FillEdges();
+  }
+}
+
+void Image::SetModifier(const std::string& modifier) {
+  modifier_ = modifier;
+}
+
+void Image::Reset() {
+  surface_ = original_surface_.clone();
 }
 
 }  // namespace image_editor

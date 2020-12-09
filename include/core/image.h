@@ -15,24 +15,40 @@ namespace image_editor {
 
         ci::Surface GetSurface() const;
 
-        void Draw(const glm::vec2& relative_pos, const ci::Color& color, double brush_radius);
+        void HandleBrush(const glm::vec2& relative_pos, const ci::Color& color, double brush_radius);
+        void Draw(const glm::vec2& pos, const ci::Color& color, double brush_radius);
+        void CorrectRedEye(const glm::vec2& pos);
+        void Blur(const glm::vec2& pos);
+
         double Distance(const glm::vec2& vec1, const glm::vec2& vec2) const;
 
         void ZeroBlue();
         void Negate();
+        void Grayscale();
         void FilterSepia();
-        void Mirror();
+        void MirrorUD();
+        void MirrorLR();
         void Posterize();
         void ColorSplash();
         void Pixelate();
         void FilterSunset();
-        void CorrectRedEye();
         void FillEdges();
 
-        const int kPosterize = 75;
 
-    private:
+
+        const int kPosterize = 75;
+        const int kFillEdges = 20;
+
+        void HandleInputFilter(const std::string& filter);
+
+        void SetModifier(const std::string& modifier);
+
+        void Reset();
+
+       private:
+        ci::Surface original_surface_;
         ci::Surface surface_;
+        std::string modifier_;
     };
 
 }  // namespace image_editor

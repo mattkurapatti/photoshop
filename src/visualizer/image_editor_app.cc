@@ -11,14 +11,19 @@ ImageEditorApp::ImageEditorApp()
                               kWindowSize - 2 * kMargin)),
       image_sidebar_(
           glm::vec2(kWindowSize * kImageSizeFactor + kMargin, kMargin),
-          glm::vec2(kWindowSize - kMargin / 2, kWindowSize - kMargin)) {
+          glm::vec2(kWindowSize - kMargin / 2,
+                    kWindowSize - kMargin)) {
   ci::app::setWindowSize(static_cast<int>(kWindowSize),
                          static_cast<int>(kWindowSize));
 }
 
 void ImageEditorApp::draw() {
-  ci::Color8u background_color(255, 255, 255);  // white
+  ci::Color8u background_color(192, 192, 192);  // silver
   ci::gl::clear(background_color);
+
+  glm::vec2 mids((kWindowSize * kImageSizeFactor - kMargin) / 2.0f, -15.0);
+  std::string message = "Press esc to reset image";
+  ci::gl::drawStringCentered(message, glm::vec2(kMargin, kMargin) + mids, ci::Color("black"));
 
   image_window_.Draw();
   image_sidebar_.Draw();
@@ -26,7 +31,7 @@ void ImageEditorApp::draw() {
 
 void ImageEditorApp::mouseDown(ci::app::MouseEvent event) {
   image_window_.HandleBrush(event.getPos(), image_sidebar_.GetSelectedColor());
-  image_sidebar_.HandleBrush(event.getPos());
+  image_sidebar_.HandleBrush(event.getPos(), image_window_.GetImage());
 }
 
 void ImageEditorApp::mouseDrag(ci::app::MouseEvent event) {
@@ -40,6 +45,10 @@ void ImageEditorApp::fileDrop(ci::app::FileDropEvent event) {
 
 void ImageEditorApp::keyDown(ci::app::KeyEvent event) {
   switch (event.getCode()) {
+    case ci::app::KeyEvent::KEY_ESCAPE: {
+      image_window_.ResetImage();
+      break;
+    }
     case ci::app::KeyEvent::KEY_o: {
       ci::fs::path path = getOpenFilePath("", ci::ImageIo::getLoadExtensions());
       image_window_.LoadSurface(path);
@@ -50,24 +59,6 @@ void ImageEditorApp::keyDown(ci::app::KeyEvent event) {
       image_window_.SaveSurface(path);
       break;
     }
-    case ci::app::KeyEvent::KEY_z: {
-      image_window_.ZeroBlue();
-      break;
-    }
-    case ci::app::KeyEvent::KEY_n: {
-      image_window_.Negate();
-      break;
-    }
-    case ci::app::KeyEvent::KEY_1: {
-      image_window_.FilterSepia();
-      break;
-    }
-    case ci::app::KeyEvent::KEY_m: {
-      image_window_.Mirror();
-      break;
-    }
-    case ci::app::KeyEvent::KEY_DELETE:
-      break;
   }
 }
 
