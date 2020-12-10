@@ -25,9 +25,13 @@ class ImageEditorApp : public ci::app::App {
   const double kMargin = 100;
   const double kImageSizeFactor = 2.0 / 3;
 
+  const double kBrushFactor = 2.0;
+
  private:
   ImageWindow image_window_;
   ImageSidebar image_sidebar_;
+
+  double brush_radius_;
 };
 
 }  // namespace visualizer

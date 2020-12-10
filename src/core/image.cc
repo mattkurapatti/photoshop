@@ -189,6 +189,25 @@ void Image::ColorSplash() {
 }
 
 void Image::Pixelate() {
+  auto width = static_cast<float>(surface_.getWidth());
+  auto height = static_cast<float>(surface_.getHeight());
+  for (float x = 0; x <= width; x += kFillEdges) {
+    for (float y = 0; y <= height; y += kFillEdges) {
+      FillBlock(glm::vec2(x, y), surface_.getPixel(glm::vec2(x, y)),
+                kFillEdges);
+    }
+  }
+}
+
+void Image::FillBlock(const glm::vec2& pos,
+                      const cinder::ColorAT<uint8_t>& color, float side_len) {
+  for (float x = pos.x; x < pos.x + side_len; x++) {
+    for (float y = pos.y; y < pos.y + side_len; y++) {
+      if (x < surface_.getWidth() && y < surface_.getHeight()) {
+        surface_.setPixel(glm::vec2(x, y), color);
+      }
+    }
+  }
 }
 
 void Image::FilterSunset() {
@@ -225,6 +244,9 @@ void Image::HandleInputFilter(const std::string& filter) {
   }
   if (filter == "Color Splash") {
     ColorSplash();
+  }
+  if (filter == "Pixelate") {
+    Pixelate();
   }
   if (filter == "Sunset Filter") {
     FilterSunset();

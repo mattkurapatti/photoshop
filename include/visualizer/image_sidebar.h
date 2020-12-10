@@ -44,8 +44,8 @@ class ImageSidebar {
   std::vector<ci::Rectf> buttons_;
 
   std::vector<std::string> filters_ = {
-      "ZeroBlue",  "Grayscale",    "Negate",        "Sepia Filter", "Mirror",
-      "Posterize", "Color Splash", "Sunset Filter", "Fill Edges"};
+      "ZeroBlue",  "Grayscale",    "Negate",   "Sepia Filter",  "Mirror",
+      "Posterize", "Color Splash", "Pixelate", "Sunset Filter", "Fill Edges"};
   std::vector<ci::Rectf> filter_buttons_;
 
   std::vector<std::string> modifiers_ = {"Draw", "Blur", "Red-Eye"};

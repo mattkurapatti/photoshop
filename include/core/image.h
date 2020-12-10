@@ -35,7 +35,7 @@ class Image {
 
 
   const int kPosterize = 75;
-  const int kFillEdges = 20;
+  const float kFillEdges = 10.0;
 
   void HandleInputFilter(const std::string& filter);
 
@@ -49,6 +49,8 @@ class Image {
   std::string modifier_;
 
   double Distance(const glm::vec2& vec1, const glm::vec2& vec2) const;
+  void FillBlock(const glm::vec2& pos, const cinder::ColorAT<uint8_t>& color,
+                 float side_len);
 };
 
 }  // namespace image_editor

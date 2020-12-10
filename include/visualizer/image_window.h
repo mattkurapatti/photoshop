@@ -17,7 +17,8 @@ class ImageWindow {
 
   void Draw() const;
 
-  void HandleBrush(const glm::vec2& brush_screen_coords, const cinder::Color& color);
+  void HandleBrush(const glm::vec2& brush_screen_coords,
+                   const cinder::Color& color, double brush_radius);
 
   void Clear();
 
