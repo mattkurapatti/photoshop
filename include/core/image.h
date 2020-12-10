@@ -17,7 +17,7 @@ class Image {
 
   void HandleBrush(const glm::vec2& relative_pos, const ci::Color& color, double brush_radius);
   void Draw(const glm::vec2& pos, const ci::Color& color, double brush_radius);
-  void CorrectRedEye(const glm::vec2& pos);
+  void CorrectRedEye(const glm::vec2& pos, double brush_radius);
   void Blur(const glm::vec2& pos);
 
   void ZeroBlue();
@@ -36,6 +36,7 @@ class Image {
 
   const int kPosterize = 75;
   const float kFillEdges = 10.0;
+  const float kRedEyeRadius = 17.5;
 
   void HandleInputFilter(const std::string& filter);
 
@@ -51,6 +52,7 @@ class Image {
   double Distance(const glm::vec2& vec1, const glm::vec2& vec2) const;
   void FillBlock(const glm::vec2& pos, const cinder::ColorAT<uint8_t>& color,
                  float side_len);
+  bool ValidPixel(const glm::vec2& vec);
 };
 
 }  // namespace image_editor

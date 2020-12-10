@@ -26,6 +26,7 @@ class ImageSidebar {
   const float kFilterButtonHeight = 30.0;
   const float kMargin = 5.0;
 
+
   cinder::Color GetSelectedColor();
 
  private:

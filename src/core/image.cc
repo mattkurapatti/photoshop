@@ -38,7 +38,7 @@ void Image::HandleBrush(const glm::vec2& relative_pos, const ci::Color& color,
   } else if (modifier_ == "Blur") {
     Blur(pos);
   } else if (modifier_ == "Red-Eye") {
-    CorrectRedEye(pos);
+    CorrectRedEye(pos, brush_radius);
   }
 }
 
@@ -57,9 +57,49 @@ void Image::Draw(const glm::vec2& pos, const cinder::Color& color,
 }
 
 void Image::Blur(const glm::vec2& pos) {
+  float num_valid = 1.0f;
+  ci::ColorA color(surface_.getPixel(pos));
+
+  ci::ColorA color1(0, 0, 0);
+  if (ValidPixel(glm::vec2(pos.x - 1, pos.y))) {
+    num_valid++;
+    color1 = surface_.getPixel(glm::vec2(pos.x - 1, pos.y));
+  }
+
+  ci::ColorA color2(0, 0, 0);
+  if (ValidPixel(glm::vec2(pos.x + 1, pos.y))) {
+    num_valid++;
+    color2 = surface_.getPixel(glm::vec2(pos.x + 1, pos.y));
+  }
+
+  ci::ColorA color3(0, 0, 0);
+  if (ValidPixel(glm::vec2(pos.x, pos.y - 1))) {
+    num_valid++;
+    color3 = surface_.getPixel(glm::vec2(pos.x, pos.y - 1));
+  }
+
+  ci::ColorA color4(0, 0, 0);
+  if (ValidPixel(glm::vec2(pos.x, pos.y + 1))) {
+    num_valid++;
+    color4 = surface_.getPixel(glm::vec2(pos.x, pos.y + 1));
+  }
+
+  float avg_r = (color.r + color1.r + color2.r + color3.r + color4.r) / num_valid;
+  float avg_g = (color.g + color1.g + color2.g + color3.g + color4.g) / num_valid;
+  float avg_b = (color.b + color1.b + color2.b + color3.b + color4.b) / num_valid;
+
+  surface_.setPixel(pos, ci::ColorA(avg_r, avg_g, avg_b));
 }
 
-void Image::CorrectRedEye(const glm::vec2& pos) {
+void Image::CorrectRedEye(const glm::vec2& pos, double brush_radius) {
+  ci::Surface::Iter iter = surface_.getIter();
+  while (iter.line()) {
+    while (iter.pixel()) {
+      if (Distance(iter.getPos(), pos) < kRedEyeRadius * brush_radius) {
+        iter.r() = 0;
+      }
+    }
+  }
 }
 
 double Image::Distance(const glm::vec2& vec1, const glm::vec2& vec2) const {
@@ -262,6 +302,11 @@ void Image::SetModifier(const std::string& modifier) {
 
 void Image::Reset() {
   surface_ = original_surface_.clone();
+}
+
+bool Image::ValidPixel(const glm::vec2& vec) {
+  return (vec.x < surface_.getWidth() && vec.x >= 0 &&
+          vec.y < surface_.getHeight() && vec.y >= 0);
 }
 
 }  // namespace image_editor
