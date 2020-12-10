@@ -44,6 +44,7 @@ void ImageWindow::HandleBrush(const glm::vec2& brush_screen_coords,
 }
 
 void ImageWindow::Clear() {
+  image_.LoadSurface("images/default.jpg");
 }
 
 void ImageWindow::LoadSurface(const ci::fs::path& path) {

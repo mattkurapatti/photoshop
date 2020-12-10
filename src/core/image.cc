@@ -161,13 +161,13 @@ void Image::Posterize() {
     while (iter.pixel()) {
       for (int rgb = 0; rgb <= 255; rgb += kPosterize) {
         if (iter.r() >= rgb && iter.r() <= kPosterize) {
-          iter.r() = (rgb + kPosterize) / 2;
+          iter.r() = std::min((rgb + rgb + kPosterize) / 2, 255);
         }
         if (iter.g() >= rgb && iter.g() <= kPosterize) {
-          iter.g() = (rgb + kPosterize) / 2;
+          iter.g() = std::min((rgb + rgb + kPosterize) / 2, 255);
         }
         if (iter.b() >= rgb && iter.b() <= kPosterize) {
-          iter.b() = (rgb + kPosterize) / 2;
+          iter.b() = std::min((rgb + rgb + kPosterize) / 2, 255);
         }
       }
     }
