@@ -22,7 +22,7 @@ void ImageEditorApp::draw() {
   ci::gl::clear(background_color);
 
   glm::vec2 mids((kWindowSize * kImageSizeFactor - kMargin) / 2.0f, -15.0);
-  std::string message = "Press esc to reset image";
+  std::string message = "Press esc to reset image, delete for blank sheet";
   ci::gl::drawStringCentered(message, glm::vec2(kMargin, kMargin) + mids, ci::Color("black"));
 
   image_window_.Draw();
@@ -47,6 +47,10 @@ void ImageEditorApp::keyDown(ci::app::KeyEvent event) {
   switch (event.getCode()) {
     case ci::app::KeyEvent::KEY_ESCAPE: {
       image_window_.ResetImage();
+      break;
+    }
+    case ci::app::KeyEvent::KEY_DELETE: {
+      image_window_.Clear();
       break;
     }
     case ci::app::KeyEvent::KEY_o: {
