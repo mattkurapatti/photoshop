@@ -144,10 +144,6 @@ void Image::Negate() {
 void Image::FilterSepia() {
   ci::Surface::Iter iter = surface_.getIter();
 
-  // based on Microsoft's algorithm for the Sepia Filter:
-  // sets r to .393 * r + .769 * g + .189 * b
-  // sets g to .349 * r + .686 * g + .168 * b
-  // sets b to .272 * r + .534 * g + .131 * b
   while (iter.line()) {
     while (iter.pixel()) {
       int r = static_cast<int>(0.393 * iter.r() + 0.769 * iter.g() +

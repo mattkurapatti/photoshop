@@ -115,7 +115,8 @@ TEST_CASE("Basic filters") {
     while (iter.line()) {
       while (iter.pixel()) {
         glm::vec2 pos = iter.getPos();
-        ci::ColorA color = surf.getPixel(glm::vec2(glm::vec2(width - pos.x - 1, height - pos.y - 1)));
+        ci::ColorA color = surf.getPixel(
+            glm::vec2(glm::vec2(width - pos.x - 1, height - pos.y - 1)));
         REQUIRE(iter.r() == color.r);
         REQUIRE(iter.g() == color.g);
         REQUIRE(iter.b() == color.b);
@@ -162,4 +163,3 @@ TEST_CASE("Basic filters") {
     }
   }
 }
-

@@ -10,13 +10,25 @@ namespace visualizer {
 
 class ImageSidebar {
  public:
+  /**
+   * Default constructor
+   * @param top_left_corner vec2 representing top left corner of image sidebar
+   * @param bottom_right_corner vec2 representing bottom right corner of image
+   * sidebar
+   */
   ImageSidebar(const glm::vec2& top_left_corner,
                const glm::vec2& bottom_right_corner);
 
-  void CreatePaintButtons();
-  void CreateFilterButtons();
-
+  /**
+   * Draws sidebar, which holds the paint buttons and filter/modifier buttons
+   */
   void Draw() const;
+
+  /**
+   * Checks if any buttons on the sidebar have been clicked
+   * @param brush_screen_coords vec2 representing the point clicked
+   * @param image Image representing image
+   */
   void HandleBrush(const glm::vec2& brush_screen_coords, Image& image);
 
   const float kPaintButtonWidth = 25.0;
@@ -26,7 +38,6 @@ class ImageSidebar {
   const float kFilterButtonHeight = 30.0;
   const float kMargin = 5.0;
 
-
   cinder::Color GetSelectedColor();
 
  private:
@@ -35,6 +46,8 @@ class ImageSidebar {
   glm::vec2 bottom_right_corner_;
 
   bool ButtonClicked(ci::Rectf rect, const glm::vec2& pos);
+  void CreatePaintButtons();
+  void CreateFilterButtons();
 
   // red, orange, yellow, green, blue, indigo, violet, black, white
   std::vector<ci::Color> colors_ = {
