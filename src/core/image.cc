@@ -84,9 +84,12 @@ void Image::Blur(const glm::vec2& pos) {
     color4 = surface_.getPixel(glm::vec2(pos.x, pos.y + 1));
   }
 
-  float avg_r = (color.r + color1.r + color2.r + color3.r + color4.r) / num_valid;
-  float avg_g = (color.g + color1.g + color2.g + color3.g + color4.g) / num_valid;
-  float avg_b = (color.b + color1.b + color2.b + color3.b + color4.b) / num_valid;
+  float avg_r =
+      (color.r + color1.r + color2.r + color3.r + color4.r) / num_valid;
+  float avg_g =
+      (color.g + color1.g + color2.g + color3.g + color4.g) / num_valid;
+  float avg_b =
+      (color.b + color1.b + color2.b + color3.b + color4.b) / num_valid;
 
   surface_.setPixel(pos, ci::ColorA(avg_r, avg_g, avg_b));
 }
@@ -192,9 +195,6 @@ void Image::MirrorUD() {
   }
 }
 
-void Image::MirrorLR() {
-}
-
 void Image::Posterize() {
   ci::Surface::Iter iter = surface_.getIter();
   while (iter.line()) {
@@ -231,8 +231,8 @@ void Image::ColorSplash() {
 void Image::Pixelate() {
   auto width = static_cast<float>(surface_.getWidth());
   auto height = static_cast<float>(surface_.getHeight());
-  for (float x = 0; x <= width; x += kFillEdges) {
-    for (float y = 0; y <= height; y += kFillEdges) {
+  for (double x = 0; x <= width; x += kFillEdges) {
+    for (double y = 0; y <= height; y += kFillEdges) {
       FillBlock(glm::vec2(x, y), surface_.getPixel(glm::vec2(x, y)),
                 kFillEdges);
     }
@@ -240,7 +240,7 @@ void Image::Pixelate() {
 }
 
 void Image::FillBlock(const glm::vec2& pos,
-                      const cinder::ColorAT<uint8_t>& color, float side_len) {
+                      const cinder::ColorAT<uint8_t>& color, double side_len) {
   for (float x = pos.x; x < pos.x + side_len; x++) {
     for (float y = pos.y; y < pos.y + side_len; y++) {
       if (x < surface_.getWidth() && y < surface_.getHeight()) {
@@ -261,6 +261,37 @@ void Image::FilterSunset() {
 }
 
 void Image::FillEdges() {
+  ci::Surface surface2 = surface_.clone();
+  ci::Surface::Iter iter = surface_.getIter();
+  while (iter.line()) {
+    while (iter.pixel()) {
+      glm::vec2 pos(iter.getPos());
+      bool fill;
+      if (ValidPixel(glm::vec2(pos.x - 1, pos.y))) {
+        fill = ColorDistance(iter, -1, 0) > kFillEdges;
+      }
+
+      if (ValidPixel(glm::vec2(pos.x + 1, pos.y)) && !fill) {
+        fill = ColorDistance(iter, 1, 0) > kFillEdges;
+      }
+
+      if (ValidPixel(glm::vec2(pos.x, pos.y + 1)) && !fill) {
+        fill = ColorDistance(iter, 0, 1) > kFillEdges;
+      }
+
+      if (ValidPixel(glm::vec2(pos.x, pos.y - 1)) & !fill) {
+        fill = ColorDistance(iter, 0, -1) > kFillEdges;
+      }
+
+      if (fill) {
+        surface2.setPixel(pos, ci::ColorA("black"));
+      } else {
+        surface2.setPixel(pos, ci::ColorA("white"));
+      }
+    }
+  }
+
+  surface_ = surface2;
 }
 
 void Image::HandleInputFilter(const std::string& filter) {
@@ -307,6 +338,14 @@ void Image::Reset() {
 bool Image::ValidPixel(const glm::vec2& vec) {
   return (vec.x < surface_.getWidth() && vec.x >= 0 &&
           vec.y < surface_.getHeight() && vec.y >= 0);
+}
+
+const double Image::ColorDistance(ci::Surface::Iter iter, int xOff, int yOff) {
+  double r_pow = std::pow(255 * (iter.r() - iter.r(xOff, yOff)), 2);
+  double g_pow = std::pow(255 * (iter.g() - iter.g(xOff, yOff)), 2);
+  double b_pow = std::pow(255 * (iter.b() - iter.b(xOff, yOff)), 2);
+
+  return std::sqrt(r_pow + g_pow + b_pow);
 }
 
 }  // namespace image_editor

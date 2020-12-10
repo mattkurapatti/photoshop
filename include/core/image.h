@@ -25,7 +25,6 @@ class Image {
   void Grayscale();
   void FilterSepia();
   void MirrorUD();
-  void MirrorLR();
   void Posterize();
   void ColorSplash();
   void Pixelate();
@@ -35,7 +34,7 @@ class Image {
 
 
   const int kPosterize = 75;
-  const float kFillEdges = 10.0;
+  const double kFillEdges = 10.0;
   const float kRedEyeRadius = 17.5;
 
   void HandleInputFilter(const std::string& filter);
@@ -51,8 +50,9 @@ class Image {
 
   double Distance(const glm::vec2& vec1, const glm::vec2& vec2) const;
   void FillBlock(const glm::vec2& pos, const cinder::ColorAT<uint8_t>& color,
-                 float side_len);
+                 double side_len);
   bool ValidPixel(const glm::vec2& vec);
+  const double ColorDistance(ci::Surface::Iter iter, int xOff, int yOff);
 };
 
 }  // namespace image_editor
